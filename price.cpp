@@ -1,6 +1,5 @@
 #include "price.h"
 #include <iostream>
-#include <conio.h>
 
 bool Price::init() {
 	std::ofstream file(PRICE_FILENAME);
@@ -65,21 +64,66 @@ void Price::show() const {
 		std::cout << "Price is empty" << std::endl;
 		return;
 	}
-
 	ListNode* node = first;
-	int count = 0;
-
 	while (node) {
 		std::cout << node->product.to_string() << std::endl;
-
-		count += 1;
-
-		if (count % 2 == 0 && node->next != NULL) {
-			std::cout << "______________________________" << std::endl;
-			std::cout << "Press a key to continue..." << std::endl;
-			_getch();
-		}
-
 		node = node->next;
 	}
+}
+
+void Price::show_by_price_ascending() {
+	// сортування - переставляння неправильно впорядкованих елементів
+	// до тих пір, поки їх не стане (всі у правильному порядку)
+	/* Перестановка у переліку :
+	* [p1|n]->[p2|n]->[p3|n]->[p4|n]   поміняти місцями p2 i p3
+	* а) поміняти значення Р в двох вузлах (через проміжну змінну)
+	*    [p1|n]->[p3|n]->[p2|n]
+	*   ! через те, що структури великі, це тягне за собою багато операцій
+	* б) поміняти покажчики на вузли
+	*    [p1|n]---------->[p3|n]   - більш ефективна операція
+			 p4<-[p2|n]<------|
+	*/
+	// окремо обробляємо випадки, коли перелік порожній або в ньому один елемент
+
+	if (first == NULL) {
+		std::cout << "Price is empty" << std::endl;
+		return;
+	}
+	if (first->next == NULL) {
+		std::cout << first->product.to_string() << std::endl;
+		return;
+	}
+	bool is_ordered;
+	do {
+		is_ordered = true;
+		ListNode* node = first;
+		// окремо перевіряємо перші два
+		if (node->product.price > node->next->product.price) {
+			// f
+			// [p1|n]->[p2|n]->[p3|n]
+			//
+			//  ---->f  
+			//       [p2|n]
+			//  <--------|
+			// [p1|n]--------->[p3|n]
+			ListNode* tmp = first->next;
+			first->next = first->next->next;  // p1.next = p3 (p2.next)
+			first->next->next = first;        // p2.next = p1
+			node = first = tmp;               // ---->f 
+			is_ordered = false;
+		}
+		while (node->next->next) {
+			ListNode* tmp = node->next;			 // tmp = p2
+			if (node->next->product.price > node->next->next->product.price) {
+				// порядок неправильний - міняємо порядок
+				node->next = node->next->next;   // p1.next = p3
+				tmp->next = tmp->next->next;	 // p2.next = p3.next
+				tmp->next->next = tmp;		     // p3.next = p2
+				is_ordered = false;
+			}
+			node = tmp;  // переходимо до наступного
+		}
+	} while (!is_ordered);
+	// відображення передаємо на інший метод
+	show();
 }
