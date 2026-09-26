@@ -14,10 +14,10 @@ int main()
 	while (true) {
 		int choice;
 		std::cout << "Choice an action:\n"
-			<< "1: init price\n"
-			<< "2: load price\n"
-			<< "3: show price\n"
-			<< "0: exit\n";
+			<< "1: Init price\n"
+			<< "2: Load price\n"
+			<< "3: Show price\n"
+			<< "0: Exit\n";
 
 		choice = _getch();
 		switch (choice) {
@@ -67,5 +67,22 @@ int main()
  - створити перший коміт
  - опублікувати репозиторій (GitHub, Azure, DevOps, BitBucket, GitLab, тощо).
  = Visual Studio дозволяє поєднати всі ці кроки
+	Git->Create Git Repository
+	Але за наявного облікового запису.
+
+____________________Система контролю версій. Продовження____________________
+ [ПК]	-- git init -- [git]
+ Project (P58)
+	Source		|				Source
+	Headers		| git add .		Headers
+	Resources	|				Resources
+	References	x	
+	x64			x
+
+ Відмінність проекту та репозиторію - репозиторій є частиною проекту, до якої входить лише те,
+ що неможна взяти з загальних джерел або створити компіляцією чи виконанням проекту.
+ Ця відмінність задається у файлі ".gitignore".
+ Репозиторій не заповнюється автоматично, слід зазначити які файли до нього долучити (подати команду git add).
+ Commit - "збереження" поточного стану файлів репозиторію, яке дає можливість пізніше повернутися до цього стану.
 
 */

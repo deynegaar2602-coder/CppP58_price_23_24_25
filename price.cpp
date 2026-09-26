@@ -1,5 +1,6 @@
 #include "price.h"
 #include <iostream>
+#include <conio.h>
 
 bool Price::init() {
 	std::ofstream file(PRICE_FILENAME);
@@ -14,6 +15,12 @@ bool Price::init() {
 	product.save_to_file(file);
 
 	product = { "Green Whiteboard Marker", 17.50f, 10, 10 };
+	product.save_to_file(file);
+
+	product = { "Lined Copybook", 7.50f, 20, 10 };
+	product.save_to_file(file);
+
+	product = { "Grided Copybook", 7.50f, 20, 10 };
 	product.save_to_file(file);
 
 	file.close();
@@ -58,9 +65,21 @@ void Price::show() const {
 		std::cout << "Price is empty" << std::endl;
 		return;
 	}
+
 	ListNode* node = first;
+	int count = 0;
+
 	while (node) {
 		std::cout << node->product.to_string() << std::endl;
+
+		count += 1;
+
+		if (count % 2 == 0 && node->next != NULL) {
+			std::cout << "______________________________" << std::endl;
+			std::cout << "Press a key to continue..." << std::endl;
+			_getch();
+		}
+
 		node = node->next;
 	}
 }
