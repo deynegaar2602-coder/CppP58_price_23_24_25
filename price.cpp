@@ -82,9 +82,18 @@ void Price::show_by_price_ascending() {
 	* б) поміняти покажчики на вузли
 	*    [p1|n]---------->[p3|n]   - більш ефективна операція
 			 p4<-[p2|n]<------|
+
+			Для перших двох елементів: 
+
+			// f
+			// [p1|n]->[p2|n]->[p3|n]
+			//
+			//  ---->f  
+			//       [p2|n]
+			//  <--------|
+			// [p1|n]--------->[p3|n]
 	*/
 	// окремо обробляємо випадки, коли перелік порожній або в ньому один елемент
-
 	if (first == NULL) {
 		std::cout << "Price is empty" << std::endl;
 		return;
@@ -97,33 +106,32 @@ void Price::show_by_price_ascending() {
 	do {
 		is_ordered = true;
 		ListNode* node = first;
+		ListNode* tmp;
 		// окремо перевіряємо перші два
 		if (node->product.price > node->next->product.price) {
-			// f
-			// [p1|n]->[p2|n]->[p3|n]
-			//
-			//  ---->f  
-			//       [p2|n]
-			//  <--------|
-			// [p1|n]--------->[p3|n]
-			ListNode* tmp = first->next;
-			first->next = first->next->next;  // p1.next = p3 (p2.next)
-			first->next->next = first;        // p2.next = p1
-			node = first = tmp;               // ---->f 
+			tmp = first->next;
+			first->next = tmp->next;
+			tmp->next = first;
+			node = first = tmp;
 			is_ordered = false;
 		}
 		while (node->next->next) {
-			ListNode* tmp = node->next;			 // tmp = p2
 			if (node->next->product.price > node->next->next->product.price) {
-				// порядок неправильний - міняємо порядок
-				node->next = node->next->next;   // p1.next = p3
-				tmp->next = tmp->next->next;	 // p2.next = p3.next
-				tmp->next->next = tmp;		     // p3.next = p2
+				ListNode* tmp = node->next;
+				//ListNode* n3 = n2->next;
+				//ListNode* n4 = n3->next;
+				node->next = tmp->next;			// n1->next = n3
+				tmp->next = tmp->next->next;	// n2->next = n4
+				node->next->next = tmp;			// n3->next = n2
 				is_ordered = false;
 			}
-			node = tmp;  // переходимо до наступного
+			node = node->next;
 		}
 	} while (!is_ordered);
 	// відображення передаємо на інший метод
 	show();
+}
+
+void Price::show_by_price_descending() {
+
 }

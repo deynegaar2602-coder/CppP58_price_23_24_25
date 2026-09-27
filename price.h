@@ -14,4 +14,5 @@ struct Price {
 	bool load();  // з прайсом до окремої "капсули" - структури Price
 	void show() const;
 	void show_by_price_ascending();
+	void show_by_price_descending();
 };
