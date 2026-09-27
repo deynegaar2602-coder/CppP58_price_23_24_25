@@ -15,6 +15,6 @@ Lined Copybook
 20
 10
 Grided Copybook
-7.0
+7.5
 20
 10
